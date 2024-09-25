@@ -1,25 +1,23 @@
 import redis from 'redis';
 
 
-const app = async () => {
-  const client = redis.createClient();
 
-  await client.on('error', err => console.log(`Redis client not connected to the server:`, err.toString()))
-    .on('connect', () => console.log('Redis Client Connected'));
+const client = redis.createClient();
 
-  const setNewSchool = (schoolName, value) => {
-    client.set(schoolName, value, redis.print);
-  }
+client.on('error', err => console.log(`Redis client not connected to the server:`, err.toString()))
+.on('connect', () => console.log('Redis Client Connected'));
 
-  const displaySchoolValue = (schoolName) => {
-    client.get(schoolName, (err, reply) => console.log(reply));
-  }
 
-  displaySchoolValue('Holberton');
-  setNewSchool('HolbertonSanFrancisco', '100');
-  displaySchoolValue('HolbertonSanFrancisco');
-
-  client.quit();
+const setNewSchool = (schoolName, value) => {
+  client.set(schoolName, value, redis.print);
 }
 
-app();
+const displaySchoolValue = (schoolName) => {
+  client.get(schoolName, (err, reply) => console.log(reply));
+}
+
+displaySchoolValue('Holberton');
+setNewSchool('HolbertonSanFrancisco', '100');
+displaySchoolValue('HolbertonSanFrancisco');
+
+client.quit();
